@@ -1,7 +1,17 @@
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: Arial;
-    margin: 40px;
+    margin: 0; /* Remove default margins to eliminate blank spaces */
+    padding: 120px 40px 0 40px; /* Increased top padding for fixed navbar, side padding for content, no bottom padding */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column;
 }
 h1, h2 {
     color: #333;
@@ -20,4 +30,51 @@ th, td {
 a {
     margin: 10px;
     display: inline-block;
+}
+
+/* Fixed navbar with full width */
+.navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    z-index: 1030;
+}
+
+/* Fix dropdown menu positioning */
+.navbar .dropdown-menu {
+    position: absolute !important;
+    z-index: 1040 !important;
+    right: 0 !important;
+    left: auto !important;
+    min-width: 200px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure dropdown stays within viewport */
+.navbar .dropdown {
+    position: relative;
+}
+
+.navbar .dropdown-menu.show {
+    transform: translate3d(-100%, 0px, 0px) !important;
+}
+
+/* Full width footer with no margins and no white space below */
+footer {
+    width: 100vw !important; /* Use viewport width instead */
+    margin: 0 !important;
+    margin-left: -40px !important; /* Offset the body padding */
+    padding-left: 40px !important; /* Add padding back for content alignment */
+    padding-right: 40px !important; /* Add padding back for content alignment */
+    box-sizing: border-box !important; /* Include padding in width calculation */
+    margin-top: auto !important; /* Push footer to bottom */
+}
+
+/* Ensure main content area grows to fill space */
+.container, .container-fluid {
+    flex: 1;
 }
