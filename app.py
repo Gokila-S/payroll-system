@@ -43,7 +43,7 @@ EMAIL_CONFIG = {
     'smtp_server': 'smtp.gmail.com',
     'smtp_port': 587,
     'email': 'gokixyz404@gmail.com',  # YOUR EMAIL HERE (e.g., 'your.email@gmail.com')
-    'password': 'axeglphobwadvedu',  # YOUR APP PASSWORD HERE (not regular password)
+    'password': 'axeg`lphobwadvedu',  # YOUR APP PASSWORD HERE (not regular password)
     'use_tls': True,
     'enabled': True  # Set to True after configuring email and password above
 }
