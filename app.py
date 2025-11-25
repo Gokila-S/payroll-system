@@ -611,6 +611,8 @@ def edit_employee(id):
         salary = float(request.form['salary'])
         tax_rate = float(request.form['tax_rate']) / 100  # Convert percentage to decimal
         allowances = float(request.form['allowances'])
+        email = request.form.get('email', '')
+        phone = request.form.get('phone', '')
         
         # Get the department name from the department ID
         if department:
@@ -619,8 +621,8 @@ def edit_employee(id):
             if dept_result:
                 department = dept_result[0]
         
-        c.execute("UPDATE employees SET name=?, position=?, department=?, salary=?, tax_rate=?, allowances=? WHERE id=?", 
-                 (name, position, department, salary, tax_rate, allowances, id))
+        c.execute("UPDATE employees SET name=?, position=?, department=?, salary=?, tax_rate=?, allowances=?, email=?, phone=? WHERE id=?", 
+                 (name, position, department, salary, tax_rate, allowances, email, phone, id))
         conn.commit()
         
         flash('Employee updated successfully!', 'success')
@@ -807,34 +809,50 @@ def export_payroll():
 @app.route('/department_report')
 @admin_required
 def department_report():
-    conn = sqlite3.connect('payroll_system/database.db')
-    c = conn.cursor()
-    
-    # Get all departments
-    c.execute("SELECT name FROM departments")
-    departments = [dept[0] for dept in c.fetchall()]
-    
-    dept_data = {}
-    for dept in departments:
-        # Get employee count
-        c.execute("SELECT COUNT(*) FROM employees WHERE department=?", (dept,))
-        emp_count = c.fetchone()[0]
+    try:
+        conn = sqlite3.connect('payroll_system/database.db')
+        c = conn.cursor()
         
-        # Get salary stats
-        c.execute("SELECT SUM(salary), AVG(salary), MIN(salary), MAX(salary) FROM employees WHERE department=?", (dept,))
-        salary_data = c.fetchone()
+        # Get all departments
+        c.execute("SELECT name FROM departments")
+        departments = [dept[0] for dept in c.fetchall()]
         
-        if emp_count > 0:
-            dept_data[dept] = {
-                'count': emp_count,
-                'total_salary': salary_data[0],
-                'avg_salary': round(salary_data[1], 2),
-                'min_salary': salary_data[2],
-                'max_salary': salary_data[3]
-            }
-    
-    conn.close()
-    
+        dept_data = {}
+        for dept in departments:
+            # Get employee count
+            c.execute("SELECT COUNT(*) FROM employees WHERE department=?", (dept,))
+            emp_count = c.fetchone()[0]
+            
+            # Get salary stats only if there are employees in this department
+            if emp_count > 0:
+                c.execute("SELECT SUM(salary), AVG(salary), MIN(salary), MAX(salary) FROM employees WHERE department=?", (dept,))
+                salary_data = c.fetchone()
+                
+                dept_data[dept] = {
+                    'count': emp_count,
+                    'total_salary': round(salary_data[0], 2) if salary_data[0] else 0,
+                    'avg_salary': round(salary_data[1], 2) if salary_data[1] else 0,
+                    'min_salary': round(salary_data[2], 2) if salary_data[2] else 0,
+                    'max_salary': round(salary_data[3], 2) if salary_data[3] else 0
+                }
+            else:
+                # Include departments with 0 employees for completeness
+                dept_data[dept] = {
+                    'count': 0,
+                    'total_salary': 0,
+                    'avg_salary': 0,
+                    'min_salary': 0,
+                    'max_salary': 0
+                }
+        
+        conn.close()
+        
+        return render_template('department_report.html', dept_data=dept_data)
+        
+    except Exception as e:
+        flash(f'Error generating department report: {str(e)}', 'danger')
+        return redirect('/')
+
 def generate_payslip_pdf(employee_data, payroll_data, month, year):
     """Generate a professional PDF payslip"""
     

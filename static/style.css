@@ -43,25 +43,64 @@ a {
     z-index: 1030;
 }
 
-/* Fix dropdown menu positioning */
+/* Fix dropdown menu positioning - ensure it appears directly below username */
+.navbar .nav-item.dropdown {
+    position: relative !important;
+}
+
 .navbar .dropdown-menu {
     position: absolute !important;
-    z-index: 1040 !important;
+    top: calc(100% + 0.125rem) !important;
     right: 0 !important;
     left: auto !important;
+    z-index: 1040 !important;
     min-width: 200px;
+    margin: 0 !important;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(0, 0, 0, 0.15);
+    transform: none !important;
+    will-change: auto !important;
 }
 
-/* Ensure dropdown stays within viewport */
-.navbar .dropdown {
-    position: relative;
-}
-
+/* Ensure dropdown appears below the toggle button */
 .navbar .dropdown-menu.show {
-    transform: translate3d(-100%, 0px, 0px) !important;
+    display: block !important;
+    position: absolute !important;
+    top: calc(100% + 0.125rem) !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
 }
+
+/* Override Bootstrap's Popper.js positioning */
+.navbar .dropdown-menu[data-popper-placement] {
+    top: calc(100% + 0.125rem) !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+}
+
+/* Improve table responsiveness for employee list */
+.table-responsive table {
+    min-width: 1200px;
+}
+
+.table th, .table td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* Adjust column widths for better display */
+.table th:nth-child(1), .table td:nth-child(1) { width: 5%; }  /* ID */
+.table th:nth-child(2), .table td:nth-child(2) { width: 15%; } /* Name */
+.table th:nth-child(3), .table td:nth-child(3) { width: 12%; } /* Position */
+.table th:nth-child(4), .table td:nth-child(4) { width: 12%; } /* Department */
+.table th:nth-child(5), .table td:nth-child(5) { width: 15%; } /* Email */
+.table th:nth-child(6), .table td:nth-child(6) { width: 10%; } /* Phone */
+.table th:nth-child(7), .table td:nth-child(7) { width: 10%; } /* Salary */
+.table th:nth-child(8), .table td:nth-child(8) { width: 8%; }  /* Tax Rate */
+.table th:nth-child(9), .table td:nth-child(9) { width: 8%; }  /* Allowances */
+.table th:nth-child(10), .table td:nth-child(10) { width: 15%; } /* Actions */
 
 /* Full width footer with no margins and no white space below */
 footer {

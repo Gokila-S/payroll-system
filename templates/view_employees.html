@@ -98,6 +98,8 @@
                                 <th>Name</th>
                                 <th>Position</th>
                                 <th>Department</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Monthly Salary</th>
                                 <th>Tax Rate</th>
                                 <th>Allowances</th>
@@ -111,6 +113,8 @@
                                 <td>{{ emp[1] }}</td>
                                 <td>{{ emp[2] }}</td>
                                 <td>{{ emp[3] or 'N/A' }}</td>
+                                <td>{{ emp[7] or 'N/A' }}</td>
+                                <td>{{ emp[8] or 'N/A' }}</td>
                                 <td>₹{{ emp[4] }}</td>
                                 <td>{{ (emp[5] * 100)|round|int }}%</td>
                                 <td>₹{{ emp[6] }}</td>
