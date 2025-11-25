@@ -25,4 +25,4 @@ A comprehensive web application for managing employee payrolls, departments, and
    ```
 3. **Access**: Open `http://127.0.0.1:5000`
 
-*Developed by Gokila-S*
+*Developed by Gokila💙*
